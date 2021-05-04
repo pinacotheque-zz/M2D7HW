@@ -41,7 +41,7 @@
         }
 
         /* EX5) Write a selector to target the "even" links in the navbar */
-        .nav-scroller a {
+        .nav a:nth-child(2n) {
             color: red !important;
         }
 
@@ -50,12 +50,15 @@
 
         /* EX7) Write a selector to target all the li into the first ordered-list in the sidebar ( Archives ) */
 
-        aside div + ol {
+        aside div:nth-child(2) ol {
             background-color: lightcoral;
         }
         /* EX8) Write a selector to target the second post author */
         
-        
+        .blog-post:nth-child(3)>p>a{
+            font-size: 25px;
+            color: lawngreen;
+        }
         
         /* EX9) Write a selector to target the "back to top" link     #### EXTRA Try doing it without targeting the footer element directly*/
         
@@ -495,19 +498,102 @@
     </footer>
 
     <script>
-      /*
-        JS Exercises
-        EX11) Write a function to add a new link into the navbar
-        EX12) Write a function to change the color of the main title
-        EX13) Write a function to change the background of the jumbotron
-        EX14) Write a function to remove all the links under "Elsewhere"
-        EX15) Write a function to change the column size for post headings
-        EX16) Write a function to remove the "Search" magnifying glass icon
-        EX17) Write a function to trim just the first 50 characters in the first paragraph for each blog post
-        EX18) Write a function and attach it to the "Newer" button, to add new Blog Post (just div and title)
-        EX19) Write a function and attach it to the "Older" button, to remove the last Blog Post
-        EX20) Write an alert with the name of the author every time the user hover with the mouse over an author name
-    */
+      
+        // JS Exercises
+       // EX11) Write a function to add a new link into the navbar
+         const addLink=(content) => {
+             const parent = document.querySelector(".nav")
+             const a = `<a class ="p-2 text-muted" href="#">${content}</a>`
+             parent.innerHTML += a      
+        }
+        addLink("new link")
+
+        // EX12) Write a function to change the color of the main title
+        
+        const changeTitle = () => {
+            let title = document.querySelector(".jumbotron h1 ")
+            title.style.color="yellow"
+        }
+        changeTitle()
+
+        // EX13) Write a function to change the background of the jumbotron
+        const changeBg =() => {
+            const jumbotron = document.querySelector(".jumbotron")
+            jumbotron.classList.remove("bg-dark")
+            jumbotron.classList.remove("text-white")
+        }
+        changeBg()
+
+        
+        // EX14) Write a function to remove all the links under "Elsewhere"
+         const removeLinks =() => {
+            const ol = document.querySelectorAll(".blog-sidebar div:nth-child(3) ol ")
+            ol.innerHTML =" "
+        }
+        removeLinks()
+        // EX15) Write a function to change the column size for post headings
+        const changeColSize=()=> {
+            const cols = document.querySelectorAll(".jumbotron + div .col-md-6")
+            console.log(cols)
+            cols.forEach((col)=> {
+                col.className = "col-md-4"
+            })
+        }
+        changeColSize()
+        // EX16) Write a function to remove the "Search" magnifying glass icon
+        const removeSearch =() => {
+            const search = document.querySelector(".blog-header .row div:last-of-type")
+            console.log(search)
+            search.children[0].remove()
+        }
+        removeSearch()
+
+        // EX17) Write a function to trim just the first 50 characters in the first paragraph for each blog post
+        const trimParag = () => {
+            const paragraphs = document.querySelectorAll(".blog-post > p:nth-of-type(2)")
+        paragraphs.forEach(
+            (paragraph) =>(paragraph.innerText = paragraph.innerText.slice(50)))
+        }
+    
+
+        // EX18) Write a function and attach it to the "Newer" button, to add new Blog Post (just div and title)
+        const addNewPost = (title = "New Post") => {
+            const parentElement = document.querySelector(".blog-main")
+            const nextSibling = document.querySelector(".blog-pagination")
+
+            const newPostDiv = document.createElement("div")
+            newPostDiv.classList.add("blog-post")
+
+            const newPostTitle = document.createElement("h2")
+            newPostTitle.classList.add("blog-post-title")
+            newPostTitle.innerText = title
+
+            newPostDiv.appendChild(newPostTitle)
+            parentElement.insertBefore(newPostDiv, nextSibling)
+        }
+        
+        // EX19) Write a function and attach it to the "Older" button, to remove the last Blog Post
+        const removeLastBlog = () => {
+            const btn = document.querySelectorAll(".blog-pagination a")[0]
+            btn.removeAttribute("href")
+            btn.addEventListener("click",function (){
+                const blogs = document.querySelectorAll(".blog-post")
+                blogs[blogs.length-1].remove()
+            })
+        }
+
+        removeLastBlog()
+        // EX20) Write an alert with the name of the author every time the user hover with the mouse over an author name
+        const alertAuthors = () => {
+            const authors = document.querySelectorAll("main .blog-main .blog-post > h2 + p > a")
+            authors.forEach((a)=> {
+                a.addEventListener("mouseenter", function(e){
+                    alert(e.target.innerText)
+                })
+            })
+        }
+        alertAuthors()
+    
     </script>
   </body>
 </html>
